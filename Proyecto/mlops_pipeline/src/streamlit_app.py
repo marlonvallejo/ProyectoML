@@ -75,7 +75,10 @@ with col1:
         
         
         st.subheader("Comparación de Métricas por Fold")
-        chart_data = cv_folds[['fold', 'kappa', 'accuracy']].set_index('fold')
+        # Usar los nombres correctos de columnas
+        chart_data = cv_folds[['fold', 'kappa_quadratic', 'accuracy']].set_index('fold')
+        # Renombrar para visualización más clara
+        chart_data = chart_data.rename(columns={'kappa_quadratic': 'Kappa (Quadratic)'})
         st.line_chart(chart_data)
 
 with col2:
@@ -88,9 +91,10 @@ with col2:
         st.dataframe(final_metrics, use_container_width=True)
         
         
-        if 'final_kappa' in final_metrics.index:
-            kappa_val = final_metrics.loc['final_kappa', final_metrics.columns[0]]
-            accuracy_val = final_metrics.loc['final_accuracy', final_metrics.columns[0]]
+        # Usar los nombres correctos de las métricas
+        if 'kappa_quadratic' in final_metrics.index:
+            kappa_val = final_metrics.loc['kappa_quadratic', final_metrics.columns[0]]
+            accuracy_val = final_metrics.loc['accuracy', final_metrics.columns[0]]
             
             metric_col1, metric_col2 = st.columns(2)
             with metric_col1:
