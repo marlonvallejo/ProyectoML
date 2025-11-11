@@ -1,10 +1,17 @@
-# Exclusiones de Git
+# ==============================================================================
+# GITIGNORE PARA PROYECTO MLOPS - PREDICCIÓN DE CALIDAD DE VINO
+# ==============================================================================
 
-# Archivos de Python
+# ==============================================================================
+# PYTHON
+# ==============================================================================
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -18,14 +25,44 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
+share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+MANIFEST
 
-# Jupyter Notebook
+# PyInstaller
+*.manifest
+*.spec
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# ==============================================================================
+# JUPYTER NOTEBOOK
+# ==============================================================================
 .ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*.ipynb_checkpoints/
 
-# Archivos de entorno
+# ==============================================================================
+# ENTORNOS VIRTUALES
+# ==============================================================================
 .env
 .venv
 env/
@@ -33,28 +70,238 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+*.venv
 
-# Archivos de IDE
+# ==============================================================================
+# IDEs Y EDITORES
+# ==============================================================================
+# VSCode
 .vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# PyCharm
 .idea/
+.idea/*
+*.iml
+*.iws
+*.ipr
+.idea_modules/
+
+# Sublime Text
+*.sublime-workspace
+*.sublime-project
+
+# Vim
 *.swp
 *.swo
 *~
+.netrwhist
 
-# Archivos del sistema
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ==============================================================================
+# SISTEMA OPERATIVO
+# ==============================================================================
+# macOS
 .DS_Store
-Thumbs.db
+.AppleDouble
+.LSOverride
+._*
 
-# Archivos de logs
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.directory
+.Trash-*
+
+# ==============================================================================
+# LOGS Y DEBUGGING
+# ==============================================================================
 *.log
 logs/
+*.log.*
+pip-log.txt
+pip-delete-this-directory.txt
 
-# Archivos de modelos
-*.pkl
-*.joblib
-*.h5
-*.pb
+# ==============================================================================
+# MODELOS Y ARTEFACTOS ML (EXCLUIR DE GIT - USAR DVC/MLFLOW)
+# ==============================================================================
+# Modelos entrenados
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pb
+models/*.pth
+models/*.onnx
+models/*.tflite
 
-# Archivos temporales
+# EXCEPCIÓN: Mantener el directorio models/ pero vacío
+!models/.gitkeep
+
+# Checkpoints de entrenamiento
+checkpoints/
+*.ckpt
+
+# ==============================================================================
+# DATOS (NO SUBIR DATOS AL REPOSITORIO)
+# ==============================================================================
+# Archivos de datos procesados
+data/train.csv
+data/test.csv
+data/X_train_processed.csv
+data/X_test_processed.csv
+data/*.csv
+data/*.parquet
+data/*.feather
+data/*.h5
+data/*.hdf5
+
+# Preprocesadores entrenados
+data/*.pkl
+data/*.joblib
+
+# EXCEPCIÓN: Mantener directorios pero vacíos
+!data/.gitkeep
+
+# Dataset original (opcional - si es muy grande)
+# Base_de_datos.csv
+
+# ==============================================================================
+# REPORTES Y VISUALIZACIONES
+# ==============================================================================
+# Reportes generados (se regeneran en cada ejecución)
+reports/*.csv
+reports/*.png
+reports/*.jpg
+reports/*.html
+reports/drift_plots/*.png
+
+# EXCEPCIÓN: Mantener directorio reports/
+!reports/.gitkeep
+!reports/drift_plots/.gitkeep
+
+# ==============================================================================
+# DOCKER
+# ==============================================================================
+# No ignorar Dockerfile y docker-compose (son necesarios)
+# Pero sí ignorar volúmenes y logs de Docker
+docker-compose.override.yml
+.dockerignore
+*.dockerfile
+docker-volumes/
+
+# ==============================================================================
+# MLFLOW / EXPERIMENT TRACKING
+# ==============================================================================
+mlruns/
+mlflow.db
+.mlflow/
+
+# ==============================================================================
+# DVC (DATA VERSION CONTROL)
+# ==============================================================================
+/dvc.lock
+/.dvc/
+.dvc/cache
+.dvc/tmp
+.dvc/plots
+
+# ==============================================================================
+# AIRFLOW (SI SE USA)
+# ==============================================================================
+airflow.db
+airflow-webserver.pid
+logs/
+dags/__pycache__/
+plugins/__pycache__/
+
+# ==============================================================================
+# SECRETS Y CREDENCIALES (¡¡CRÍTICO!!)
+# ==============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.crt
+*.cer
+*.p12
+credentials.json
+secrets.yaml
+config/secrets.yaml
+
+# API Keys y tokens
+*_token
+*_key
+*_secret
+*.credentials
+
+# ==============================================================================
+# TEMPORALES Y CACHE
+# ==============================================================================
 *.tmp
 *.temp
+*.bak
+*.swp
+*.swo
+.cache/
+.temp/
+tmp/
+temp/
+
+# ==============================================================================
+# STREAMLIT
+# ==============================================================================
+.streamlit/secrets.toml
+
+# ==============================================================================
+# SONARCLOUD / ANÁLISIS DE CÓDIGO
+# ==============================================================================
+.scannerwork/
+.sonar/
+
+# ==============================================================================
+# PYTEST
+# ==============================================================================
+.pytest_cache/
+.tox/
+
+# ==============================================================================
+# ARCHIVOS ESPECÍFICOS DEL PROYECTO
+# ==============================================================================
+# Notebooks de experimentación personal (opcional)
+# notebooks/exploracion_personal.ipynb
+# notebooks/experimentos/
+
+# Configuraciones locales
+config.local.json
+config.override.json
+
+# ==============================================================================
+# NOTAS IMPORTANTES:
+# ==============================================================================
+# 1. Los modelos (*.joblib) NO se suben al repositorio
+#    → Usar MLflow, DVC o similar para versionado de modelos
+# 2. Los datos procesados NO se suben
+#    → Regenerar con ft_engineering.py
+# 3. Los reportes NO se suben
+#    → Regenerar ejecutando el pipeline
+# 4. El dataset original (Base_de_datos.csv) SÍ se sube (es pequeño)
+# 5. NUNCA subir credenciales (.env, tokens, keys)
+# ==============================================================================

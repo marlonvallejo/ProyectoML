@@ -1,0 +1,46 @@
+version: '3.8'
+services:
+  pipeline:
+    build:
+      context: .
+      dockerfile: mlops_pipeline/Dockerfile
+    image: proyecto-ml:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    tty: true
+    command: ["/bin/bash"]
+
+  runner:
+    build:
+      context: .
+      dockerfile: mlops_pipeline/Dockerfile
+    image: proyecto-ml-runner:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    entrypoint: ["python", "-m", "mlops_pipeline.src.run_pipeline"]
+
+  api:
+    build:
+      context: .
+      dockerfile: mlops_pipeline/Dockerfile
+    image: proyecto-ml-api:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    ports:
+      - "8000:8000"
+    command: ["uvicorn", "mlops_pipeline.src.model_deploy:app", "--host", "0.0.0.0", "--port", "8000"]
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: mlops_pipeline/Dockerfile
+    image: proyecto-ml-streamlit:latest
+    volumes:
+      - ./:/app
+    working_dir: /app
+    ports:
+      - "8501:8501"
+    command: ["streamlit", "run", "mlops_pipeline/src/streamlit_app.py", "--server.port", "8501", "--server.address", "0.0.0.0"]
