@@ -93,8 +93,9 @@ with col2:
         
         # Usar los nombres correctos de las métricas
         if 'kappa_quadratic' in final_metrics.index:
-            kappa_val = final_metrics.loc['kappa_quadratic', final_metrics.columns[0]]
-            accuracy_val = final_metrics.loc['accuracy', final_metrics.columns[0]]
+            # Convertir a float para evitar errores de formato
+            kappa_val = float(final_metrics.loc['kappa_quadratic', final_metrics.columns[0]])
+            accuracy_val = float(final_metrics.loc['accuracy', final_metrics.columns[0]])
             
             metric_col1, metric_col2 = st.columns(2)
             with metric_col1:
